@@ -114,7 +114,7 @@ namespace FluentNHibernate
 
         public void Add(Type type)
         {
-            var mapping = CreateInstanceFunc(type);
+            var mapping = CreateInstanceFunc(type) ?? type.InstantiateUsingParameterlessConstructor();
 
             if (mapping is IMappingProvider)
                 Add((IMappingProvider)mapping);

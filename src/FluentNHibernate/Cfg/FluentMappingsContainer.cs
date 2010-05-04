@@ -140,6 +140,9 @@ namespace FluentNHibernate.Cfg
             model.Configure(cfg);
         }
 
+        /// <summary>
+        /// Accepts a custom construction mechanism for mapping provider types.
+        /// </summary>
         public void ConstructBy(Func<Type, object> builder)
         {
             model.CreateInstanceFunc = builder;
