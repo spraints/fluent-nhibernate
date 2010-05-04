@@ -81,6 +81,15 @@ namespace FluentNHibernate.Cfg
             return this;
         }
 
+        /// <summary>
+        /// Accepts a custom construction mechanism for mapping provider types.
+        /// </summary>
+        public FluentMappingsContainer ConstructBy(Func<Type, object> builder)
+        {
+            model.CreateInstanceFunc = builder;
+            return this;
+        }
+
 		/// <summary>
         /// Sets the export location for generated mappings
         /// </summary>
@@ -138,14 +147,6 @@ namespace FluentNHibernate.Cfg
                 model.WriteMappingsTo(exportTextWriter);
 
             model.Configure(cfg);
-        }
-
-        /// <summary>
-        /// Accepts a custom construction mechanism for mapping provider types.
-        /// </summary>
-        public void ConstructBy(Func<Type, object> builder)
-        {
-            model.CreateInstanceFunc = builder;
         }
     }
 }
