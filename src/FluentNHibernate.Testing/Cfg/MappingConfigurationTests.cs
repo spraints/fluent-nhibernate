@@ -5,6 +5,7 @@ using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Testing.DomainModel;
 using FluentNHibernate.Testing.Fixtures;
+using FluentNHibernate.Utils;
 using NHibernate.Cfg;
 using NUnit.Framework;
 
@@ -203,6 +204,20 @@ namespace FluentNHibernate.Testing.Cfg
             mapping.MergeMappings();
             mapping.Apply(new Configuration());
             mapping.FluentMappings.PersistenceModel.MergeMappings.ShouldBeTrue();
+        }
+
+        [Test]
+        public void ConstructFluentMappingWithProvidedBuilder()
+        {
+            var wasCalled = false;
+            mapping.FluentMappings.AddFromAssemblyOf<Record>();
+            mapping.FluentMappings.ConstructBy(t =>
+            {
+                wasCalled = true;
+                return t.InstantiateUsingParameterlessConstructor();
+            });
+            mapping.Apply(cfg);
+            wasCalled.ShouldBeTrue();
         }
     }
 }

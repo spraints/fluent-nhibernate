@@ -139,5 +139,10 @@ namespace FluentNHibernate.Cfg
 
             model.Configure(cfg);
         }
+
+        public void ConstructBy(Func<Type, object> builder)
+        {
+            model.CreateInstanceFunc = builder;
+        }
     }
 }

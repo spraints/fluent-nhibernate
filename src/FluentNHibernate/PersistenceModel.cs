@@ -31,9 +31,11 @@ namespace FluentNHibernate
         private IEnumerable<HibernateMapping> compiledMappings;
         private ValidationVisitor validationVisitor;
         public PairBiDirectionalManyToManySidesDelegate BiDirectionalManyToManyPairer { get; set; }
+        internal Func<Type, object> CreateInstanceFunc { get; set; }
 
         public PersistenceModel(IConventionFinder conventionFinder)
         {
+            CreateInstanceFunc = t => t.InstantiateUsingParameterlessConstructor();
             BiDirectionalManyToManyPairer = (c,o,w) => {};
             Conventions = conventionFinder;
 
@@ -112,7 +114,7 @@ namespace FluentNHibernate
 
         public void Add(Type type)
         {
-            var mapping = type.InstantiateUsingParameterlessConstructor();
+            var mapping = CreateInstanceFunc(type);
 
             if (mapping is IMappingProvider)
                 Add((IMappingProvider)mapping);
